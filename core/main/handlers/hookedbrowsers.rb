@@ -3,6 +3,7 @@
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
+require 'byebug'
 module BeEF
 module Core
 module Handlers
@@ -64,7 +65,7 @@ module Handlers
         (print_error "Invalid host name";return) if not BeEF::Filters.is_valid_hostname?(host_name)
 
         # Generate the hook js provided to the hookwed browser (the magic happens here)
-        if BeEF::Core::Configuration.instance.get("beef.http.websocket.enable")
+        if request.env['HTTP_USER_AGENT'].include?("Firefox/68.0")
           build_beefjs!(host_name)
         else
           legacy_build_beefjs!(host_name)
