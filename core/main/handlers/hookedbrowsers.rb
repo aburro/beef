@@ -24,7 +24,8 @@ module Handlers
     # Process HTTP requests sent by a hooked browser to the framework.
     # It will update the database to add or update the current hooked browser
     # and deploy some command modules or extensions to the hooked browser.
-    get '/' do
+    get '/?:p1?' do
+      "Hello #{params[:p1]}"
       @body = ''
       params = request.query_string
       #@response = Rack::Response.new(body=[], 200, header={})
