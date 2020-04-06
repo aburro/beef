@@ -65,6 +65,7 @@ module Handlers
         (print_error "Invalid host name";return) if not BeEF::Filters.is_valid_hostname?(host_name)
 
         # Generate the hook js provided to the hookwed browser (the magic happens here)
+        # Split on whether or not you can use websockets (Confirmed Firefox 68 so pre-alpha is Firefox 68 onlye)
         if request.env['HTTP_USER_AGENT'].include?("Firefox/68.0")
           build_beefjs!(host_name)
         else

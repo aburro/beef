@@ -24,4 +24,6 @@ beef.prehook = {
 }
 
 beef.regCmp('beef.prehook');
-beef.execute(beef.prehook.check())
+if (beef.execute(beef.prehook.check())) {
+  
+}
