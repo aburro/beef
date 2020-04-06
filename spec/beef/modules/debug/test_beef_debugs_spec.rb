@@ -8,7 +8,6 @@ require 'rest-client'
 require 'json'
 require_relative '../../../support/constants'
 require_relative '../../../support/beef_test'
-require 'byebug'
 
 RSpec.describe 'BeEF Debug Command Modules:' do
 
