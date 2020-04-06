@@ -6,7 +6,7 @@
 beef:
     extension:
         dns:
-            enable: false
+            enable: true
             name: 'DNS Server'
             authors: ['soh_cah_toa']
             protocol: 'udp'

@@ -11,7 +11,7 @@ RSpec.describe 'BeEF API Rate Limit' do
 		ARGV = []
 		@config = BeEF::Core::Configuration.instance
 		@config.set('beef.credentials.user', "beef")
-		@config.set('beef.credentials.passwd', "beef")
+		@config.set('beef.credentials.passwd', "beef1")
 		http_hook_server = BeEF::Core::Server.instance
 		http_hook_server.prepare
 		@pids = fork do
