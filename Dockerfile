@@ -1,14 +1,15 @@
 FROM ruby:2.6.3-alpine AS builder
 LABEL maintainer="Beef Project: github.com/beefproject/beef"
 
-# ARG BUNDLER_ARGS="--jobs=2 --without test"
+# requires --gemfile=/beef/Gemfile $BUNDLER_ARGS && on line 11 below
+ARG BUNDLER_ARGS="--jobs=4" 
 
 RUN echo "gem: --no-ri --no-rdoc" > /etc/gemrc
 
 COPY . /beef
 
 RUN apk add --no-cache git curl libcurl curl-dev ruby-dev libffi-dev make g++ gcc musl-dev zlib-dev sqlite-dev && \
-  bundle install --system --clean --no-cache --gemfile=/beef/Gemfile && \
+  bundle install --system --clean --no-cache --gemfile=/beef/Gemfile $BUNDLER_ARGS && \
   # Temp fix for https://github.com/bundler/bundler/issues/6680
   rm -rf /usr/local/bundle/cache
 
@@ -34,6 +35,6 @@ WORKDIR /beef
 
 USER beef
 
-EXPOSE 3000
+EXPOSE 3000 6789 61985 61986
 
 ENTRYPOINT ["/beef/beef"]
