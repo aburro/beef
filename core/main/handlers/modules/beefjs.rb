@@ -17,50 +17,12 @@ module BeEF
             config = BeEF::Core::Configuration.instance
             # @note set up values required to construct beefjs
             beef_js = ''
+
             # @note location of sub files
             beef_js_path = "#{$root_dir}/core/main/client/"
 
-            # @note External libraries (like jQuery) that are not evaluated with Eruby and possibly not obfuscated
-            ext_js_sub_files = %w(lib/jquery-1.12.4.min.js lib/jquery-migrate-1.4.1.js lib/evercookie.js lib/json2.js lib/mdetect.js lib/platform.js lib/jquery.blockUI.js)
-
             # @note BeEF libraries: need Eruby evaluation and obfuscation
-            beef_js_sub_files = %w(beef.js browser.js browser/cookie.js browser/popup.js session.js os.js hardware.js dom.js logger.js net.js updater.js encode/base64.js encode/json.js net/local.js init.js mitb.js geolocation.js net/dns.js net/connection.js net/cors.js net/requester.js net/xssrays.js net/portscanner.js are.js)
-            # @note Load websocket library only if WS server is enabled in config.yaml
-            if config.get("beef.http.websocket.enable") == true
-              beef_js_sub_files << "websocket.js"
-            end
-            # @note Load webrtc library only if WebRTC extension is enabled
-            if config.get("beef.extension.webrtc.enable") == true
-              beef_js_sub_files << "lib/webrtcadapter.js"
-              beef_js_sub_files << "webrtc.js"
-            end
-
-            # @note antisnatchor: leave timeout.js as the last one!
-            beef_js_sub_files << "timeout.js"
-
-            ext_js_to_obfuscate = ''
-            ext_js_to_not_obfuscate = ''
-
-            # @note If Evasion is enabled, the final ext_js string will be ext_js_to_obfuscate + ext_js_to_not_obfuscate
-            # @note If Evasion is disabled, the final ext_js will be just ext_js_to_not_obfuscate
-            ext_js_sub_files.each { |ext_js_sub_file|
-              if config.get("beef.extension.evasion.enable")
-                if config.get("beef.extension.evasion.exclude_core_js").include?(ext_js_sub_file)
-                  print_debug "Excluding #{ext_js_sub_file} from core files obfuscation list"
-                  # do not obfuscate the file
-                  ext_js_sub_file_path = beef_js_path + ext_js_sub_file
-                  ext_js_to_not_obfuscate << (File.read(ext_js_sub_file_path) + "\n\n")
-                else
-                  ext_js_sub_file_path = beef_js_path + ext_js_sub_file
-                  ext_js_to_obfuscate << (File.read(ext_js_sub_file_path) + "\n\n")
-                end
-              else
-                # Evasion is not enabled, do not obfuscate anything
-                ext_js_sub_file_path = beef_js_path + ext_js_sub_file
-                ext_js_to_not_obfuscate << (File.read(ext_js_sub_file_path) + "\n\n")
-              end
-            }
-
+            beef_js_sub_files = %w(beef.js net.js prehook.js)
             # @note construct the beef_js string from file(s)
             beef_js_sub_files.each { |beef_js_sub_file|
               beef_js_sub_file_path = beef_js_path + beef_js_sub_file
@@ -122,7 +84,8 @@ module BeEF
               evasion = BeEF::Extension::Evasion::Evasion.instance
               @final_hook = ext_js_to_not_obfuscate + evasion.add_bootstrapper + evasion.obfuscate(ext_js_to_obfuscate + @hook)
             else
-              @final_hook = ext_js_to_not_obfuscate + @hook
+              #@final_hook = ext_js_to_not_obfuscate + @hook
+              @final_hook = @hook
             end
 
             # @note Return the final hook to be sent to the browser

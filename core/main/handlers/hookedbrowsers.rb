@@ -3,6 +3,7 @@
 # Browser Exploitation Framework (BeEF) - http://beefproject.com
 # See the file 'doc/COPYING' for copying permission
 #
+require 'byebug'
 module BeEF
 module Core
 module Handlers
@@ -23,7 +24,8 @@ module Handlers
     # Process HTTP requests sent by a hooked browser to the framework.
     # It will update the database to add or update the current hooked browser
     # and deploy some command modules or extensions to the hooked browser.
-    get '/' do
+    get '/?:p1?' do
+      "Hello #{params[:p1]}"
       @body = ''
       params = request.query_string
       #@response = Rack::Response.new(body=[], 200, header={})
@@ -64,7 +66,8 @@ module Handlers
         (print_error "Invalid host name";return) if not BeEF::Filters.is_valid_hostname?(host_name)
 
         # Generate the hook js provided to the hookwed browser (the magic happens here)
-        if BeEF::Core::Configuration.instance.get("beef.http.websocket.enable")
+        # Split on whether or not you can use websockets (Confirmed Firefox 68 so pre-alpha is Firefox 68 onlye)
+        if request.env['HTTP_USER_AGENT'].include?("Firefox/68.0")
           build_beefjs!(host_name)
         else
           legacy_build_beefjs!(host_name)

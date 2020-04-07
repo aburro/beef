@@ -9,13 +9,13 @@
  * Register the BeEF JS on the window object.
  */
 
-$j = jQuery.noConflict();
+//$j = jQuery.noConflict();
 
 if(typeof beef === 'undefined' && typeof window.beef === 'undefined') {
 
     /**
      * Register the BeEF JS on the window object.
-     * @namespace {Object} BeefJS 
+     * @namespace {Object} BeefJS
      * @property {string} version BeEf Version
      * @property {boolean} pageIsLoaded This gets set to true during window.onload(). It's a useful hack when messing with document.write().
      * @property {array} onpopstate An array containing functions to be executed by the window.onpopstate() method.
@@ -25,7 +25,7 @@ if(typeof beef === 'undefined' && typeof window.beef === 'undefined') {
      */
 
     var BeefJS = {
-        
+
         version: '<%= @beef_version %>',
         pageIsLoaded: false,
         onpopstate: new Array(),
