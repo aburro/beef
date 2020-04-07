@@ -9,7 +9,7 @@
  * Register the BeEF JS on the window object.
  */
 
-//$j = jQuery.noConflict();
+$j = jQuery.noConflict();
 
 if(typeof beef === 'undefined' && typeof window.beef === 'undefined') {
 
