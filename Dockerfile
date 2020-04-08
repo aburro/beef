@@ -1,14 +1,15 @@
-#######################################################################################################
-#######################################################################################################
-##                                                                                                   ##
-## Please read the Wiki Installation section on set-up using Docker prior to building this container.##
-## BeEF does NOT allow authentication with default credentials. So please, at the very least         ##
-## change the username:password in the config.yaml file from beef:beef before building.              ##
-##                                                                                                   ##
-#######################################################################################################
-#######################################################################################################
+###########################################################################################################
+###########################################################################################################
+##                                                                                                       ##
+##   Please read the Wiki Installation section on set-up using Docker prior to building this container.  ##
+##   BeEF does NOT allow authentication with default credentials. So please, at the very least           ##
+##   change the username:password in the config.yaml file to something secure that is not beef:beef      ##
+##   before building or you will to denied access and have to rebuild anyway.                            ##
+##                                                                                                       ##
+###########################################################################################################
+###########################################################################################################
 
-# ---------------------------- Start of Builder 0 - Gemset Build
+# ---------------------------- Start of Builder 0 - Gemset Build ------------------------------------------
 FROM ruby:2.6.3-alpine AS builder
 LABEL maintainer="Beef Project: github.com/beefproject/beef"
 
@@ -30,10 +31,10 @@ WORKDIR /beef
 
 # So we don't need to run as root
 RUN chmod -R a+r /usr/local/bundle
-# ---------------------------- End of Builder 0
+# ------------------------------------- End of Builder 0 -------------------------------------------------
 
 
-# ---------------------------- Start of Builder 1 - Final Build
+# ---------------------------- Start of Builder 1 - Final Build ------------------------------------------
 FROM ruby:2.6.3-alpine
 LABEL maintainer="Beef Project: github.com/beefproject/beef"
 
@@ -60,4 +61,4 @@ USER beef
 EXPOSE 3000 6789 61985 61986
 
 ENTRYPOINT ["/beef/beef"]
-# ---------------------------- End of Builder 1
+# ------------------------------------- End of Builder 1 -------------------------------------------------
